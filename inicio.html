@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maria Garcia Valero</title>
+    <link rel=StyleSheet href="../archivos/style.css" type="text/css" media=screen>
+    <style>
+        .intro{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    font-size: 18px;
+}
+.intro a{
+    margin-bottom:25px;
+    text-align: center;
+    font-size: 18px;
+}
+.eliminar-varios{
+    background: #004c45;
+    color: white;
+    border: 1px solid white;
+    padding: 10px;
+    cursor: pointer;
+}
+.eliminar-varios:hover{
+    background:#837a02
+}
+    </style>
 </head>
-<body>
-    <h1>Prueba para ver si se sube a git</h1>
+<body style="background:#004c45;display: flex;
+align-items: center;
+justify-content: center;text-decoration: none;">
+    <div class="intro">
+        <h1 STYLE="    color:#837a02">BIENVENID@</h1>
+    <a style="text-decoration: none" class='eliminar-varios' href='/agenda/archivos/login.php'>Si tengo BBDD</a>
+    <a style="text-decoration: none" class='eliminar-varios' href='/agenda/archivos/bbdd.php'>No tengo BBDD</a>
+</div>
 </body>
 </html>
