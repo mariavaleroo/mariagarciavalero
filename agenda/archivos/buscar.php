@@ -4,7 +4,7 @@ include "../archivos/conexion1.php";
 
 if (isset($_COOKIE['contrasena'])||isset($_SESSION['contra'])){
 }else{
-	header('Location: /login.php');
+	header('Location: ../archivos/login.php');
 	die() ;
 }
 ?>

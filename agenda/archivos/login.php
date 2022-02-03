@@ -106,15 +106,17 @@ if(isset($_POST["btnRegistrar2"])){
             $sql=$conn ->prepare($consulta);
             $sql->bindParam(':cod',($_POST['cod']));
             $sql->execute();
-            $consulta=$sql->fetchALL(PDO::FETCH_ASSOC);
+            $consulta=$sql->fetchALL();
            if($consulta>0){
                echo "<div class='alerta2' id='mensaje'>Usuario ya registrado</div>";
-           }else{
+           }
+           if($consulta==null){
+               //desciframos la contraseña para comprobar si es igual a lo que e usuario ha introducido
             $contra=password_hash($_POST['contrasena'], PASSWORD_DEFAULT);
             $usu=$_POST['cod'];
             $conn->exec("INSERT INTO `agenda`.`usuarios` (`usuario`, `contrasena`) VALUES ('$usu', '$contra');"); 
-            header('Location: login.php');  
-           }
+            header('Location: ../archivos/login.php');
+        }
     }
     if($contrasena1!=$contrasena2){
         echo "<div class='alerta2' id='mensaje'>Las contraseñas deben ser iguales</div>";

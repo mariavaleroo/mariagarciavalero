@@ -10,7 +10,7 @@ include "../archivos/conexion1.php";
 session_start();
     if (isset($_COOKIE['contrasena'])||isset($_SESSION['contra'])){
     }else{
-        header('Location: login.php');
+        header('Location: ../archivos/login.php');
         die() ;
     }
 
@@ -19,7 +19,6 @@ session_start();
 	echo  "<form class='contactos' action='' method='post'><input type='submit' name='cargar' value='Cargar Contactos'>
 	<input type='submit' class='cerrar' name='cerrar' value='  '></form>";
 	
-		
 	if(isset($_POST['cargar'])){
 		$open = fopen('contactos.txt','r');
 		while (!feof($open)){
@@ -36,7 +35,7 @@ session_start();
 
 	//CERRAR CONEXIÓN
 	if(isset($_POST['cerrar'])){
-		header('Location: login.php');
+		header('Location: ../archivos/login.php');
 		setcookie("usuario",$_COOKIE['usuario'],time()-1);
 		setcookie("contrasena",$_COOKIE['contrasena'],time()-1);
 		session_destroy();
@@ -70,13 +69,24 @@ session_start();
 		$consulta_nombres->bindParam(':cod',$id);
 		$consulta_nombres->execute();
 		$resultado_nombres=$consulta_nombres->fetchAll();
+
+		
 		echo "<div class='contenedor' id='container'><form action='' method='post' class='elemento'><table>";
 		foreach($resultado_nombres as $nombre_columna){
 			for($i=0;$i<count($nombre_columna)/2;$i++){
 				if($i==0){
 					echo "<tr class='sin' ><input type='text' readonly name='dato[]' value='".$nombre_columna[$i]."'></input></tr>";
+				}elseif(($i==1)||($i==4)){
+					echo "<tr class='sin'><input type='text' name='dato[]' value='".$nombre_columna[$i]."'></input></tr>";
+				}elseif($i==2){
+					echo "<tr class='sin'><input type='number' name='dato[]' value='".$nombre_columna[$i]."'></input></tr>";
+
+				}elseif($i==3){
+					echo "<tr class='sin'><input type='date' name='dato[]' value='".$nombre_columna[$i]."'></input></tr>";
+
 				}else{
 					echo "<tr class='sin'><input type='' name='dato[]' value='".$nombre_columna[$i]."'></input></tr>";
+
 				}
 			}
 		}
@@ -97,12 +107,10 @@ session_start();
 					$nombress[]=$nombre_columna;
 				}
 			}
-
-			if((is_numeric($_POST['dato'][2])) && (strpos($_POST["dato"][4], "@")!==false) && (strpos($_POST["dato"][4], ".")!==false)){
+			if((ctype_digit($_POST["dato"][4])!==false) && (strpos($_POST["dato"][4], "@")!==false) && (strpos($_POST["dato"][4], ".")!==false)){
 				$stmt = $conn->query("SELECT COUNT(*) FROM agenda WHERE telefono='".$_POST['dato'][2]."' OR correo='".$_POST['dato'][4]."' AND codigo <>".$_POST['dato'][0]."");
 				$res = $stmt->fetchColumn(0);
 				if($res){
-					
 					for($i=1;$i<count($nombress);$i++){
 						$nombress[$i][0];
 						$sql="UPDATE agenda SET  ".$nombress[$i][0]."=:nom  WHERE codigo=".$_POST['dato'][0].";";
@@ -114,9 +122,10 @@ session_start();
 				}else{
 					echo "<div class='alerta' id='mensaje'>El teléfono o correo ya se encuentra registrado</div>";
 
+					
 				}	
 			}else{
-				echo "<div class='alerta' id='mensaje'>El teléfono debe ser numérico y el correo debe contener '@' y '.' </div>";
+				echo "<div class='alerta' id='mensaje'>El nombre no puede contener números y el correo debe contener '@' y '.' </div>";
 
 			}				
 	};
@@ -136,8 +145,19 @@ session_start();
 		echo "<div class='contenedor' id='container'><form action='' method='post' class='elemento'><table>";
 		array_shift($resultado_nombres);//borramos la primera fila porque es el código y no queremos que aparezca porque es autoincrement
 		foreach($resultado_nombres as $nombre_columna){
-			for($i=0;$i<count($nombre_columna)/2;$i++){		
-				echo "<tr class='sin'>".$nombre_columna[$i]."<input type='text' name='dato[]' value=''></input></tr>";
+
+			for($i=0;$i<count($nombre_columna)/2;$i++){
+				if(($nombre_columna[$i]=="nombre")||($nombre_columna[$i]=="correo")){
+					echo "<tr class='sin'>".$nombre_columna[$i]."<input require type='text' name='dato[]' value=''></input></tr>";
+				}elseif($nombre_columna[$i]=="telefono"){
+					echo "<tr class='sin'>".$nombre_columna[$i]."<input require type='number' name='dato[]' value=''></input></tr>";
+
+				}elseif($nombre_columna[$i]=="fechaNac"){
+					echo "<tr class='sin'>".$nombre_columna[$i]."<input require type='date' name='dato[]' value=''></input></tr>";
+				}else{
+					echo "<tr class='sin'>".$nombre_columna[$i]."<input require type='text' name='dato[]' value=''></input></tr>";
+
+				}
 			}
 		}
 		echo "<tr><div><input type='submit' class='eliminar-varios' name='agregar-ult' value='Agregar'></input>";
@@ -153,7 +173,6 @@ pero es lo único que se me ha ocurrido para que sea independiente de la bbdd y,
 
 */
 if(isset($_POST['agregar-ult'])){
-	if((is_numeric($_POST['dato'][1])) && (strpos($_POST["dato"][3], "@")!==false) && (strpos($_POST["dato"][3], ".")!==false)){
 		$stmt = $conn->query("SELECT COUNT(*) FROM agenda WHERE telefono='".$_POST['dato'][1]."' OR correo='".$_POST['dato'][3]."' ");
 	$res = $stmt->fetchColumn(0);
 	if($res){
@@ -188,9 +207,7 @@ if(isset($_POST['agregar-ult'])){
 		}
 			echo "<div class='alerta' id='mensaje'>Contacto agregado</div>";
 	}
-	}else{
-		echo "<div class='alerta' id='mensaje'>El teléfono debe ser numérico y el correo debe contener '@' y '.' </div>";
-	}
+	
 	
 		
 }
