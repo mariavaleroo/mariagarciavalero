@@ -40,6 +40,7 @@ try {
     $oConBD->exec("CREATE USER 'agenda'@'localhost' IDENTIFIED BY '2DAWdwes';");
     $oConBD->exec("GRANT ALL PRIVILEGES ON `agenda`.* TO 'agenda'@'localhost';");
     $oConBD->exec("FLUSH PRIVILEGES;");
+    
     //conexión a la bbdd con ese usuario y contraseña
     $bd1=""; 
     $username1="agenda";

@@ -107,9 +107,9 @@ session_start();
 					$nombress[]=$nombre_columna;
 				}
 			}
-			if((ctype_digit($_POST["dato"][4])!==false) && (strpos($_POST["dato"][4], "@")!==false) && (strpos($_POST["dato"][4], ".")!==false)){
+			/*if( (strpos($_POST["dato"][4], "@")!==false) && (strpos($_POST["dato"][4], ".")!==false)){
 				$stmt = $conn->query("SELECT COUNT(*) FROM agenda WHERE telefono='".$_POST['dato'][2]."' OR correo='".$_POST['dato'][4]."' AND codigo <>".$_POST['dato'][0]."");
-				$res = $stmt->fetchColumn(0);
+				$res = $stmt->fetchColumn(0);*/
 				if($res){
 					for($i=1;$i<count($nombress);$i++){
 						$nombress[$i][0];
