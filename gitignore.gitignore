@@ -13,5 +13,5 @@ node_modules
 # Ignora archivos de configuración SASS
 .sass-cache
 
-# ignorar archivo bbdd.php
-bbdd.php
+# ignorar archivo mariagarcia.txt
+mariagarcia.txt
